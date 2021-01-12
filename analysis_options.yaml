@@ -1,0 +1,9 @@
+include: package:pedantic/analysis_options.yaml
+
+linter:
+  rules:
+    omit_local_variable_types: false
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    prefer_const_literals_to_create_immutables: true
+    unnecessary_const: true
