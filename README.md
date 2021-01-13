@@ -2,6 +2,11 @@
 
 A Flutter calculator that aims for fast results while offering extended scientific functionality.
 
+<a href='https://play.google.com/store/apps/details?id=dev.bhu.fcalc'>
+<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height='80px'/></a>
+
+<small>* Google Play and the Google Play logo are trademarks of Google LLC.</small>
+
 ## Build it for Android
 
 First, just follow the [Flutter install instructions](https://flutter.dev/docs/get-started/install) and install Flutter as well as the Android SDK. If you've done so, clone the repository, connect your Android device and simply:
