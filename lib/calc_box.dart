@@ -20,22 +20,22 @@ class CalcBoxContainer extends StatelessWidget {
         height: math.min(MediaQuery.of(context).size.height * 0.25, 350),
         padding: const EdgeInsets.only(top: 6, bottom: 3, left: 3, right: 3),
         child: Container(
-          padding: const EdgeInsets.only(left: 6, right: 6),
-          decoration: BoxDecoration(
-            border: Border.all(
+            decoration: BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.grey[600]
+                      : Colors.grey[500],
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(10))),
+            child: Material(
               color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.grey[600]
-                  : Colors.grey[500],
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            color: Theme.of(context).brightness == Brightness.dark
-                ? Colors.grey[900]
-                : const Color.fromARGB(15, 0, 0, 0),
-          ),
-          child: Consumer<ExpressionModel>(builder: (context, expressionModel, child) {
-            return _CalcBox(expressionModel: expressionModel, model: model);
-          }),
-        ));
+                  ? Colors.grey[900]
+                  : const Color.fromARGB(15, 0, 0, 0),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              child: Consumer<ExpressionModel>(builder: (context, expressionModel, child) {
+                return _CalcBox(expressionModel: expressionModel, model: model);
+              }),
+            )));
   }
 }
 
@@ -215,7 +215,8 @@ class _CalcBoxState extends State<_CalcBox> {
             flex: 8,
             child: Align(
                 alignment: Alignment.centerLeft,
-                child: SizedBox(
+                child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
                     width: double.infinity,
                     child: CursorText(
                       textComponents: widget.expressionModel.textComponents,
@@ -234,14 +235,15 @@ class _CalcBoxState extends State<_CalcBox> {
                 Align(
                     alignment: Alignment.centerRight,
                     child: Padding(
-                        padding: const EdgeInsets.only(left: 4, bottom: 24),
+                        padding: const EdgeInsets.only(left: 6, bottom: 24, right: 6),
                         child: AutoSizeText.rich(_evaluate(), maxLines: 1, minFontSize: 10))),
                 Align(
                     alignment: Alignment.bottomLeft,
-                    child: GestureDetector(
+                    child: InkWell(
+                      borderRadius: const BorderRadius.all(Radius.circular(7)),
                       onTap: () => _showAngleUnitDialog(),
                       child: Padding(
-                          padding: const EdgeInsets.only(left: 4, right: 15, top: 30, bottom: 7),
+                          padding: const EdgeInsets.only(left: 10, right: 10, top: 7, bottom: 7),
                           child: Text(
                             'ANGLE ' + (model.angleUnit == AngleUnit.radian ? 'RAD' : 'DEG'),
                             style: TextStyle(
@@ -253,10 +255,11 @@ class _CalcBoxState extends State<_CalcBox> {
                     )),
                 Align(
                     alignment: Alignment.bottomRight,
-                    child: GestureDetector(
+                    child: InkWell(
+                        borderRadius: const BorderRadius.all(Radius.circular(7)),
                         onTap: () => _showFormatDialog(),
                         child: Padding(
-                            padding: const EdgeInsets.only(right: 4, bottom: 7, top: 8),
+                            padding: const EdgeInsets.only(left: 10, bottom: 7, top: 7, right: 10),
                             child: Text(_getFormatLabel(),
                                 style: TextStyle(
                                     fontSize: 13,
