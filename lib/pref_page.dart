@@ -46,7 +46,7 @@ class PreferencePage extends StatelessWidget {
               values: const [
                 _DropDownValue('', 'None'),
                 _DropDownValue(' ', 'Space'),
-                _DropDownValue('.', 'Comma'),
+                _DropDownValue(',', 'Comma'),
               ],
               setFunction: (String value) => model.thousandSeparator = value,
               getFunction: () => model.thousandSeparator,
