@@ -47,11 +47,13 @@ class _FCalcAppState extends State<FCalcApp> {
             theme: ThemeData(
                 primaryColor: const Color(0xff1259a9),
                 accentColor: const Color(0xffd07c25),
-                buttonColor: Colors.grey[200],
+                buttonColor: Colors.grey[100],
                 visualDensity: VisualDensity.adaptivePlatformDensity,
                 brightness: Brightness.light,
                 textTheme:
                     typography.black.copyWith(button: const TextStyle(color: Color(0xff0E447F))),
+                accentTextTheme:
+                    typography.black.copyWith(bodyText1: const TextStyle(color: Color(0xff236DBC))),
                 fontFamily: 'RobotoRegular'),
             darkTheme: ThemeData(
                 primaryColor: const Color(0xff1259a9),
@@ -59,6 +61,8 @@ class _FCalcAppState extends State<FCalcApp> {
                 buttonColor: const Color(0xff406895),
                 visualDensity: VisualDensity.adaptivePlatformDensity,
                 textTheme: typography.white.copyWith(button: const TextStyle(color: Colors.white)),
+                accentTextTheme:
+                    typography.white.copyWith(bodyText1: const TextStyle(color: Color(0xffE2A56C))),
                 brightness: Brightness.dark,
                 fontFamily: 'RobotoRegular'),
             themeMode: _model.theme,

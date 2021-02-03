@@ -57,7 +57,7 @@ class CalcButton extends StatelessWidget {
         padding: EdgeInsets.all(math.min(MediaQuery.of(context).size.width * 0.007, 7)),
         height: double.infinity,
         child: RawMaterialButton(
-            elevation: 2,
+            elevation: 1,
             fillColor: Theme.of(context).buttonColor,
             child: buttonIcon == null
                 ? RichText(

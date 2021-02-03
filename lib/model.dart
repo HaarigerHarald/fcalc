@@ -209,6 +209,10 @@ class ExpressionModel extends ChangeNotifier {
     }
   }
 
+  List<Token> operator [](int index) {
+    return _expression[index];
+  }
+
   bool get isEmpty => _expression.isEmpty;
   bool get isNotEmpty => _expression.isNotEmpty;
 

@@ -6,12 +6,12 @@ enum FunctionArgumentPos { prefix, suffix, none }
 
 enum OperatorAssociativity { left, right, none }
 
-enum _TokenType { numeric, operator, leftParenthesis, rightParenthesis, function, constant }
+enum TokenType { numeric, operator, leftParenthesis, rightParenthesis, function, constant }
 
 /// Represents a token within a given mathematical expression.
 class Token {
   final String symbol;
-  final _TokenType _type;
+  final TokenType type;
   final num value;
   final MathFunction mathFunc;
   final FunctionArgumentPos funcArgPos;
@@ -22,7 +22,7 @@ class Token {
   /// Whether to pass the angle conversion factor to the [MathFunction] as [arg2].
   final bool isTrignometricFunction;
 
-  const Token._(this.symbol, this._type,
+  const Token._(this.symbol, this.type,
       {this.value,
       this.mathFunc,
       this.funcArgPos = FunctionArgumentPos.none,
@@ -32,7 +32,7 @@ class Token {
       this.arg2});
 
   const Token.numeric(this.symbol, [this.value])
-      : _type = _TokenType.numeric,
+      : type = TokenType.numeric,
         mathFunc = null,
         funcArgPos = FunctionArgumentPos.none,
         presedence = 0,
@@ -42,7 +42,7 @@ class Token {
 
   const Token.operation(this.symbol, this.presedence,
       [this.associativity = OperatorAssociativity.left])
-      : _type = _TokenType.operator,
+      : type = TokenType.operator,
         value = null,
         mathFunc = null,
         funcArgPos = FunctionArgumentPos.none,
@@ -53,13 +53,13 @@ class Token {
       {this.funcArgPos = FunctionArgumentPos.suffix,
       this.arg2,
       this.isTrignometricFunction = false})
-      : _type = _TokenType.function,
+      : type = TokenType.function,
         value = null,
         presedence = 5,
         associativity = OperatorAssociativity.none;
 
   const Token.constant(this.symbol, this.value)
-      : _type = _TokenType.constant,
+      : type = TokenType.constant,
         mathFunc = null,
         funcArgPos = FunctionArgumentPos.none,
         presedence = 0,
@@ -86,8 +86,8 @@ class Token {
   static const Token divide = Token.operation('÷', 2);
   static const Token exponentiate = Token.operation('^', 3, OperatorAssociativity.right);
 
-  static const Token leftParenthesis = Token._('(', _TokenType.leftParenthesis);
-  static const Token rightParenthesis = Token._(')', _TokenType.rightParenthesis);
+  static const Token leftParenthesis = Token._('(', TokenType.leftParenthesis);
+  static const Token rightParenthesis = Token._(')', TokenType.rightParenthesis);
 
   // There should be a way to define lambda functions as const, but currently there is none :/
   // see: https://github.com/dart-lang/language/issues/1048
@@ -231,10 +231,10 @@ List<Token> _collapseNumerics(List<Token> tokenInputList) {
   List<Token> tokenOutputList = [];
   String collapsedSymbol = '';
   for (final Token token in tokenInputList) {
-    if (token._type == _TokenType.numeric) {
+    if (token.type == TokenType.numeric) {
       collapsedSymbol += token.symbol;
     } else {
-      if (token._type == _TokenType.constant && collapsedSymbol == '-') {
+      if (token.type == TokenType.constant && collapsedSymbol == '-') {
         tokenOutputList.add(Token.constant(token.symbol, -token.value));
         collapsedSymbol = '';
         continue;
@@ -258,9 +258,9 @@ List<Token> _collapseNumerics(List<Token> tokenInputList) {
 
       if (token == Token.subtract &&
           (tokenOutputList.isEmpty ||
-              (tokenOutputList.last._type != _TokenType.numeric &&
-                  tokenOutputList.last._type != _TokenType.constant &&
-                  tokenOutputList.last._type != _TokenType.rightParenthesis &&
+              (tokenOutputList.last.type != TokenType.numeric &&
+                  tokenOutputList.last.type != TokenType.constant &&
+                  tokenOutputList.last.type != TokenType.rightParenthesis &&
                   tokenOutputList.last.funcArgPos != FunctionArgumentPos.prefix))) {
         collapsedSymbol = '-';
         continue;
@@ -282,14 +282,14 @@ List<Token> _convertToRPN(List<Token> tokenList) {
 
   Token lastNonParenthesis;
   for (final Token token in tokenList.reversed) {
-    if (token._type != _TokenType.leftParenthesis && token._type != _TokenType.rightParenthesis) {
+    if (token.type != TokenType.leftParenthesis && token.type != TokenType.rightParenthesis) {
       lastNonParenthesis = token;
       break;
     }
   }
 
   if (lastNonParenthesis != null &&
-      lastNonParenthesis._type == _TokenType.function &&
+      lastNonParenthesis.type == TokenType.function &&
       lastNonParenthesis.funcArgPos == FunctionArgumentPos.suffix) {
     throw EvaluationException('Missing argument: ' + lastNonParenthesis.symbol);
   }
@@ -304,53 +304,53 @@ List<Token> _convertToRPN(List<Token> tokenList) {
   List<Token> output = [];
   Token prevToken;
   for (final Token token in tokenList) {
-    switch (token._type) {
-      case _TokenType.numeric:
+    switch (token.type) {
+      case TokenType.numeric:
         if (output.isNotEmpty) {
-          if (prevToken._type == _TokenType.numeric ||
-              prevToken._type == _TokenType.constant ||
-              prevToken._type == _TokenType.rightParenthesis) {
+          if (prevToken.type == TokenType.numeric ||
+              prevToken.type == TokenType.constant ||
+              prevToken.type == TokenType.rightParenthesis) {
             throw EvaluationException('Missing operator');
           }
         }
         output.add(token);
         break;
-      case _TokenType.constant:
+      case TokenType.constant:
         if (output.isNotEmpty) {
-          if (prevToken._type == _TokenType.numeric ||
-              prevToken._type == _TokenType.constant ||
-              prevToken._type == _TokenType.rightParenthesis) {
+          if (prevToken.type == TokenType.numeric ||
+              prevToken.type == TokenType.constant ||
+              prevToken.type == TokenType.rightParenthesis) {
             stack.add(Token.multiply);
           }
         }
         output.add(token);
         break;
-      case _TokenType.function:
+      case TokenType.function:
         if (token.funcArgPos == FunctionArgumentPos.prefix) {
           output.add(token);
         } else {
           if (output.isNotEmpty) {
-            if (prevToken._type == _TokenType.numeric ||
-                prevToken._type == _TokenType.constant ||
-                prevToken._type == _TokenType.rightParenthesis) {
+            if (prevToken.type == TokenType.numeric ||
+                prevToken.type == TokenType.constant ||
+                prevToken.type == TokenType.rightParenthesis) {
               stack.add(Token.multiply);
             }
           }
           stack.add(token);
         }
         break;
-      case _TokenType.operator:
+      case TokenType.operator:
         if (token == Token.subtract &&
-            prevToken._type != _TokenType.numeric &&
-            prevToken._type != _TokenType.constant &&
-            prevToken._type != _TokenType.rightParenthesis &&
+            prevToken.type != TokenType.numeric &&
+            prevToken.type != TokenType.constant &&
+            prevToken.type != TokenType.rightParenthesis &&
             prevToken.funcArgPos != FunctionArgumentPos.prefix) {
           output.add(const Token.numeric('-1', -1));
           stack.add(Token.multiply);
           break;
         }
         while (stack.isNotEmpty &&
-            stack.last._type == _TokenType.operator &&
+            stack.last.type == TokenType.operator &&
             (stack.last.associativity == OperatorAssociativity.left ||
                 token.associativity == OperatorAssociativity.left) &&
             token.presedence <= stack.last.presedence) {
@@ -358,24 +358,24 @@ List<Token> _convertToRPN(List<Token> tokenList) {
         }
         stack.add(token);
         break;
-      case _TokenType.leftParenthesis:
+      case TokenType.leftParenthesis:
         if (output.isNotEmpty) {
-          if (prevToken._type == _TokenType.numeric ||
-              prevToken._type == _TokenType.constant ||
-              prevToken._type == _TokenType.rightParenthesis) {
+          if (prevToken.type == TokenType.numeric ||
+              prevToken.type == TokenType.constant ||
+              prevToken.type == TokenType.rightParenthesis) {
             stack.add(Token.multiply);
           }
         }
         stack.add(token);
         break;
-      case _TokenType.rightParenthesis:
-        while (stack.isNotEmpty && stack.last._type != _TokenType.leftParenthesis) {
+      case TokenType.rightParenthesis:
+        while (stack.isNotEmpty && stack.last.type != TokenType.leftParenthesis) {
           output.add(stack.removeLast());
         }
-        if (stack.isEmpty || stack.removeLast()._type != _TokenType.leftParenthesis) {
+        if (stack.isEmpty || stack.removeLast().type != TokenType.leftParenthesis) {
           throw EvaluationException('Missing opening parenthesis');
         }
-        if (stack.isNotEmpty && stack.last._type == _TokenType.function) {
+        if (stack.isNotEmpty && stack.last.type == TokenType.function) {
           output.add(stack.removeLast());
         }
         break;
@@ -385,7 +385,7 @@ List<Token> _convertToRPN(List<Token> tokenList) {
   }
 
   while (stack.isNotEmpty) {
-    if (stack.last._type != _TokenType.leftParenthesis) {
+    if (stack.last.type != TokenType.leftParenthesis) {
       output.add(stack.removeLast());
     } else {
       // We ignore too many opening parenthesis here.
@@ -405,8 +405,8 @@ num evaluate(List<Token> tokenList, [AngleUnit angleUnit = AngleUnit.radian]) {
   // Evaluate the RPN output list.
   List<num> stack = [];
   for (final Token token in rpnList) {
-    switch (token._type) {
-      case _TokenType.function:
+    switch (token.type) {
+      case TokenType.function:
         if (token.isTrignometricFunction) {
           stack.add(token.mathFunc(
               stack.removeLast(), angleUnit == AngleUnit.degree ? _radianToDegreeFact : 1));
@@ -414,11 +414,11 @@ num evaluate(List<Token> tokenList, [AngleUnit angleUnit = AngleUnit.radian]) {
           stack.add(token.mathFunc(stack.removeLast(), token.arg2));
         }
         break;
-      case _TokenType.constant:
-      case _TokenType.numeric:
+      case TokenType.constant:
+      case TokenType.numeric:
         stack.add(token.value);
         break;
-      case _TokenType.operator:
+      case TokenType.operator:
         if (stack.length < 2) {
           throw EvaluationException('Missing operand' + (stack.isEmpty ? 's' : ''));
         }
@@ -446,8 +446,8 @@ num evaluate(List<Token> tokenList, [AngleUnit angleUnit = AngleUnit.radian]) {
             break;
         }
         break;
-      case _TokenType.leftParenthesis:
-      case _TokenType.rightParenthesis:
+      case TokenType.leftParenthesis:
+      case TokenType.rightParenthesis:
         // These tokens have been removed.
         break;
     }

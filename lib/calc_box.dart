@@ -26,11 +26,19 @@ class CalcBoxContainer extends StatelessWidget {
                       ? Colors.grey[600]
                       : Colors.grey[500],
                 ),
-                borderRadius: const BorderRadius.all(Radius.circular(10))),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                boxShadow: [
+                  BoxShadow(color: Colors.black.withOpacity(0.10)),
+                  BoxShadow(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey[900]
+                          : const Color(0xFFFBFBFB),
+                      spreadRadius: -3.0,
+                      blurRadius: 7.0,
+                      offset: const Offset(0, -1)),
+                ]),
             child: Material(
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.grey[900]
-                  : const Color.fromARGB(15, 0, 0, 0),
+              color: Colors.transparent,
               borderRadius: const BorderRadius.all(Radius.circular(10)),
               child: Consumer<ExpressionModel>(builder: (context, expressionModel, child) {
                 return _CalcBox(expressionModel: expressionModel, model: model);
@@ -208,6 +216,20 @@ class _CalcBoxState extends State<_CalcBox> {
 
   @override
   Widget build(BuildContext context) {
+    List<TexSpan> spanComponents = [];
+    List<String> textComponents = widget.expressionModel.textComponents;
+    final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
+    TextStyle effectiveTextStyle = defaultTextStyle.style
+        .merge(const TextStyle(fontSize: 26.0, height: 1.6, letterSpacing: 1.1));
+
+    for (int i = 0; i < textComponents.length; i++) {
+      if (widget.expressionModel[i][0].type == TokenType.operator) {
+        spanComponents.add(TexSpan(textComponents[i],
+            effectiveTextStyle.copyWith(color: Theme.of(context).accentTextTheme.bodyText1.color)));
+      } else {
+        spanComponents.add(TexSpan(textComponents[i], effectiveTextStyle));
+      }
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -219,8 +241,8 @@ class _CalcBoxState extends State<_CalcBox> {
                     padding: const EdgeInsets.symmetric(horizontal: 6),
                     width: double.infinity,
                     child: CursorText(
-                      textComponents: widget.expressionModel.textComponents,
-                      style: const TextStyle(fontSize: 26.0, height: 1.6, letterSpacing: 1.1),
+                      spanComponents: spanComponents,
+                      style: effectiveTextStyle,
                       autofocus: true,
                       cursorWidth: 3,
                       cursorColor: Theme.of(context).primaryColor,

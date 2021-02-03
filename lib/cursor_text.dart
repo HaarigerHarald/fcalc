@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'tex_span.dart';
 
 class CursorText extends StatefulWidget {
-  final List<String> textComponents;
+  final List<TexSpan> spanComponents;
   final TextStyle style;
   final double cursorWidth;
   final Color cursorColor;
@@ -15,7 +15,7 @@ class CursorText extends StatefulWidget {
 
   const CursorText(
       {Key key,
-      this.textComponents,
+      this.spanComponents,
       this.style,
       this.cursorWidth,
       this.cursorColor,
@@ -150,14 +150,14 @@ class _CursorTextState extends State<CursorText>
     TexSpan subCursorSpan;
     int cursorPos = 0;
     int componentPos = 0;
-    for (final comp in widget.textComponents) {
+    for (final comp in widget.spanComponents) {
       if (texSpan == null) {
-        texSpan = TexSpan(comp, effectiveTextStyle);
+        texSpan = comp;
       } else {
-        texSpan = texSpan.merge(TexSpan(comp, effectiveTextStyle));
+        texSpan = texSpan.merge(comp);
       }
       if (componentPos < widget.componentPos) {
-        cursorPos += TexSpan.calcRenderedTextLength(comp);
+        cursorPos += comp.toPlainText().length;
         if (componentPos == widget.componentPos - 1) {
           subCursorSpan = texSpan.copy();
         }
@@ -193,7 +193,7 @@ class _CursorTextState extends State<CursorText>
           key: editableTextKey,
           controller: _controller,
           focusNode: _focusNode,
-          style: effectiveTextStyle.copyWith(color: Colors.transparent),
+          style: effectiveTextStyle,
           cursorColor: widget.cursorColor,
           backgroundCursorColor: Colors.transparent,
           readOnly: true,
