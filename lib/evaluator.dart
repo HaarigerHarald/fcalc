@@ -526,7 +526,7 @@ String format(num value,
     if ((abs < 1E3 || (format == Format.mixedFraction && abs < scientificLimit)) &&
         abs > 1 / maxDenominator) {
       return _formatFraction(value, format == Format.mixedFraction, maxFractionError,
-          maxDenominator, thousandSeparator);
+          maxDenominator, scientificLimit, significantDigits, thousandSeparator);
     }
   }
 
@@ -558,7 +558,7 @@ String format(num value,
 }
 
 String _formatFraction(num value, bool mixed, double maxFractionError, double maxDenominator,
-    String thousandSeparator) {
+    double scientificLimit, int significantDigits, String thousandSeparator) {
   // Richard's algorithm, modified from:  https://stackoverflow.com/a/42085412
   num sign = value.sign.toInt();
 
@@ -581,7 +581,11 @@ String _formatFraction(num value, bool mixed, double maxFractionError, double ma
       z != z.truncateToDouble());
 
   if (denominator >= maxDenominator || denominator == 1) {
-    return format(value, format: Format.decimal);
+    return format(value,
+        format: Format.decimal,
+        scientificLimit: scientificLimit,
+        significantDigits: significantDigits,
+        thousandSeparator: thousandSeparator);
   }
 
   if (mixed) {
