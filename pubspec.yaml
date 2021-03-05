@@ -22,12 +22,12 @@ environment:
 
 dependencies:
   auto_size_text: ^2.1.0
-  flutter_svg: ^0.19.1
+  flutter_svg: ^0.19.3
   move_to_background: ^1.0.1
-  package_info_plus: ^0.6.3
-  provider: ^4.3.2+3
-  shared_preferences: ^0.5.12+4
-  url_launcher: ^5.7.10
+  package_info_plus: ^1.0.0
+  provider: ^5.0.0
+  shared_preferences: ^2.0.3
+  url_launcher: ^6.0.2
   flutter:
     sdk: flutter
 

@@ -67,7 +67,7 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
           return Future.value(true);
         },
         child: Scaffold(
-          resizeToAvoidBottomPadding: false,
+          resizeToAvoidBottomInset: false,
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(50.0),
             child: AppBar(
@@ -227,7 +227,7 @@ class _StandardTab extends StatelessWidget {
                             evaluationResult: eval);
                       });
                 } catch (e) {
-                  Scaffold.of(context).showSnackBar(const SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text('Invalid result to store', style: TextStyle(fontSize: 18)),
                       duration: Duration(milliseconds: 1700)));
                 }
