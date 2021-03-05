@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="119.5" height="119.5" version="1.1" viewBox="0 0 31.617 31.617" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(0 .00029813)" fill="#1470d7">
+  <rect transform="matrix(1,0,0,1.0172,-59.242,-30.223)" x="59.27" y="29.849" width="31.561" height="30.805" rx="5.679" style="paint-order:markers fill stroke"/>
+  <rect transform="matrix(1,0,0,1.0172,-59.242,-30.223)" x="59.27" y="29.849" width="31.561" height="30.805" rx="5.679" style="paint-order:markers fill stroke"/>
+  <rect transform="matrix(1,0,0,1.0172,-59.242,-30.223)" x="59.27" y="29.849" width="31.561" height="30.805" rx="5.679" stroke-width=".99151" style="paint-order:markers fill stroke"/>
+  <rect transform="matrix(1,0,0,1.0172,-59.242,-30.223)" x="59.27" y="29.849" width="31.561" height="30.805" rx="5.679" stroke-width=".99151" style="paint-order:markers fill stroke"/>
+ </g>
+ <path d="m15.755 0.1413v31.336h10.155c3.1462 0 5.6787-2.5764 5.6787-5.7768v-19.783c0-3.2004-2.5325-5.7768-5.6787-5.7768z" fill="#755015" opacity=".33586" stroke-dashoffset="1.6101" stroke-linecap="round" stroke-linejoin="round" stroke-width=".265" style="paint-order:markers fill stroke"/>
+ <g transform="translate(-55.27 -25.849)" fill="#fff">
+  <g transform="matrix(1.068,0,0,1.021,-7.9312,-5.131)" stroke-width=".25337" aria-label="=">
+   <path d="m84.848 36.823h-10.918v-2.1077h10.918zm0 5.4329h-10.918v-2.0946h10.918z" fill="#fff" stroke-width=".25337"/>
+  </g>
+  <g transform="matrix(1.1442,0,0,1.092,-14.169,-7.3514)" stroke-width=".2367" aria-label="+">
+   <path d="m69.022 46.627h3.0772v1.3264h-3.0772v3.4864h-1.4097v-3.4864h-3.0772v-1.3264h3.0772v-3.2212h1.4097z" fill="#fff" stroke-width=".2367"/>
+  </g>
+  <g transform="matrix(1.0236 0 0 .97691 .0088543 .0088541)" stroke-width=".26458" aria-label="×">
+   <path d="m58.79 38.163 2.7958-2.8466-2.7788-2.8381 1.0082-1.0421 2.7873 2.8381 2.7873-2.8381 1.0082 1.0421-2.7788 2.8381 2.7958 2.8466-1.0082 1.0421-2.8042-2.8551-2.8042 2.8551z" fill="#fff" stroke-width=".26458"/>
+  </g>
+  <g transform="matrix(1.1442,0,0,1.092,-14.169,-7.3514)" stroke-width=".2367" aria-label="-">
+   <path d="m70.922 55.751h-5.0436v-1.5606h5.0436z" fill="#fff" stroke-width=".2367"/>
+  </g>
+ </g>
+</svg>
